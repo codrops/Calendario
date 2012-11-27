@@ -1,0 +1,360 @@
+body {
+	background: #cebe29;
+	background: -moz-linear-gradient(-45deg, #cebe29 0%, #9b1f50 33%, #2989d8 71%, #89b4ff 91%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#cebe29), color-stop(33%,#9b1f50), color-stop(71%,#2989d8), color-stop(91%,#89b4ff));
+	background: -webkit-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
+	background: -o-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
+	background: -ms-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
+	background: linear-gradient(135deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cebe29', endColorstr='#89b4ff',GradientType=1 );
+	-webkit-background-size: 100% 100%;
+	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+
+.custom-calendar-full {
+	position: absolute;
+	top: 24px;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: auto;
+}
+
+.fc-calendar-container {
+	height: auto;
+	bottom: 0px;
+	width: 100%;
+	top: 50px;
+	position: absolute;
+}
+
+.custom-header {
+	padding: 20px 20px 10px 30px;
+	height: 50px;
+	position: relative;
+}
+
+.custom-header h2,
+.custom-header h3 {
+	float: left;
+	font-weight: 300;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.custom-header h2 {
+	color: #fff;
+	width: 60%;
+}
+
+.custom-header h2 a, 
+.custom-header h2 span {
+	color: rgba(255,255,255,0.3);
+	font-size: 18px;
+	letter-spacing: 3px;
+	white-space: nowrap;
+}
+
+.custom-header h2 a {
+	color: rgba(255,255,255,0.5);
+}
+
+.no-touch .custom-header h2 a:hover {
+	color: rgba(255,255,255,0.9);
+}
+
+.custom-header h3 {
+	width: 40%;
+	color: #ddd;
+	color: rgba(255,255,255,0.6);
+	font-weight: 300;
+	line-height: 30px;
+	text-align: right;
+	padding-right: 125px;
+}
+
+.custom-header nav {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.custom-header nav span {
+	float: left;
+	width: 30px;
+	height: 30px;
+	position: relative;
+	color: transparent;
+	cursor: pointer;
+	background: rgba(255,255,255,0.3);
+	margin: 0 1px;
+	font-size: 20px;
+	border-radius: 0 3px 3px 0;
+	box-shadow: inset 0 1px rgba(255,255,255,0.2);
+}
+
+.custom-header nav span:first-child {
+	border-radius: 3px 0 0 3px;
+}
+
+.custom-header nav span:hover {
+	background: rgba(255,255,255,0.5);
+}
+
+.custom-header span:before {
+	font-family: 'fontawesome-selected';
+	color: #fff;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	text-indent: 4px;
+}
+
+.custom-header nav span.custom-prev:before {
+	content: '\25c2';
+}
+
+.custom-header nav span.custom-next:before {
+	content: '\25b8';
+}
+
+.custom-header nav span:last-child {
+	margin-left: 20px;
+	border-radius: 3px;
+}
+
+.custom-header nav span.custom-current:before {
+	content: '\27a6';
+}
+
+
+.fc-calendar {
+	background: rgba(255,255,255,0.1);
+	width: auto;
+	top: 10px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+	height: auto;
+	border-radius: 20px;
+	position: absolute;
+}
+
+.fc-calendar .fc-head { 
+	background: rgba(255,255,255,0.2);
+	color: rgba(255,255,255,0.9);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+	border-radius: 20px 20px 0 0;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 20px;
+}
+
+.fc-calendar .fc-head > div {
+	font-weight: 300;
+	text-transform: uppercase;
+	font-size: 14px;
+	letter-spacing: 3px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
+.fc-calendar .fc-row > div > span.fc-date {
+	color: rgba(255,255,255,0.9);
+	text-shadow: none;
+	font-size: 26px;
+	font-weight: 300;
+	bottom: auto;
+	right: auto;
+	top: 10px;
+	left: 10px;
+	text-align: left;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.fc-calendar .fc-body {
+	border: none;
+	padding: 20px;
+}
+
+.fc-calendar .fc-row {
+	box-shadow: inset 0 -1px 0 rgba(255,255,255,0.2);
+	border: none;
+}
+
+.fc-calendar .fc-row:last-child {
+	box-shadow: none;
+}
+
+.fc-calendar .fc-row:first-child > div:first-child {
+	border-radius: 10px 0 0 0;
+}
+
+.fc-calendar .fc-row:first-child > div:last-child {
+	border-radius: 0 10px 0 0;
+}
+
+.fc-calendar .fc-row:last-child > div:first-child {
+	border-radius: 0 0 0 10px;
+}
+
+.fc-calendar .fc-row:last-child > div:last-child {
+	border-radius: 0 0 10px 0;
+}
+
+.fc-calendar .fc-row > div {
+	box-shadow: -1px 0 0 rgba(255, 255, 255, 0.2);
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.fc-calendar .fc-row > div:first-child{
+	box-shadow: none;
+}
+
+.fc-calendar .fc-row > div.fc-today {
+	background: transparent;
+	box-shadow: inset 0 0 100px rgba(255,255,255,0.1);
+}
+
+.fc-calendar .fc-row > div.fc-today:after { 
+	content: ''; 
+	display: block;
+	position: absolute;
+	top: 0; 
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.2;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255, 255, 255, 0.15)), to(rgba(0, 0, 0, 0.25))), -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(255, 255, 255, 0)), color-stop(0.5, rgba(255, 255, 255, .15)), color-stop(0.501, rgba(255, 255, 255, 0)), color-stop(1, rgba(255, 255, 255, 0)));
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -moz-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+	background: -o-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -o-llinear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+	background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), -ms-linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+	background: linear-gradient(top, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.25)), linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0));
+}
+
+.fc-calendar .fc-row > div > div {
+	margin-top: 35px;
+}
+
+.fc-calendar .fc-row > div > div a,
+.fc-calendar .fc-row > div > div span {
+	color: rgba(255,255,255,0.7);
+	font-size: 12px;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 3px 5px;
+	border-radius: 3px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
+	margin-bottom: 1px;
+	background: rgba(255,255,255,0.1);
+}
+
+.no-touch .fc-calendar .fc-row > div > div a:hover {
+	background: rgba(255,255,255,0.3);
+}
+
+@media screen and (max-width: 880px) , screen and (max-height: 450px) {
+	html, body, .container {
+		height: auto;
+	}
+
+	.custom-header,
+	.custom-header nav,
+	.custom-calendar-full,
+	.fc-calendar-container, 
+	.fc-calendar,
+	.fc-calendar .fc-head,
+	.fc-calendar .fc-row > div > span.fc-date {
+		position: relative;
+		top: auto;
+		left: auto;
+		bottom: auto;
+		right: auto;
+		height: auto;
+		width: auto;
+	}
+
+	.fc-calendar {
+		margin: 0 20px 20px;
+	}
+
+	.custom-header h2,
+	.custom-header h3 {
+		float: none;
+		width: auto;
+		text-align: left;
+		padding-right: 100px;
+	}
+
+	.fc-calendar .fc-row,
+	.ie9 .fc-calendar .fc-row > div,
+	.fc-calendar .fc-row > div {
+		height: auto;
+		width: 100%;
+		border: none;
+	}
+
+	.fc-calendar .fc-row > div {
+		float: none;
+		min-height: 50px;
+		box-shadow: inset 0 -1px rgba(255,255,255,0.2) !important;
+		border-radius: 0px !important;
+	}
+
+	.fc-calendar .fc-row > div:empty{
+		min-height: 0;
+		height: 0;
+		box-shadow: none !important;
+		padding: 0;
+	}
+
+	.fc-calendar .fc-row {
+		box-shadow: none;
+	}
+
+	.fc-calendar .fc-head {
+		display: none;
+	}
+
+	.fc-calendar .fc-row > div > div {
+		margin-top: 0px;
+		padding-left: 10px;
+		max-width: 70%;
+		display: inline-block;
+	}
+
+	.fc-calendar .fc-row > div.fc-today {
+		background: rgba(255, 255, 255, 0.2);
+	}
+
+	.fc-calendar .fc-row > div.fc-today:after { 
+		display: none;
+	}
+
+	.fc-calendar .fc-row > div > span.fc-date {
+		width: 30px;
+		display: inline-block;
+		text-align: right;
+	}
+
+	.fc-calendar .fc-row > div > span.fc-weekday {
+		display: inline-block;
+		width: 40px;
+		color: #fff;
+		color: rgba(255,255,255,0.7);
+		font-size: 10px;
+		text-transform: uppercase;
+	}
+}
