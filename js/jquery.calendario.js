@@ -150,11 +150,14 @@
 
 					var pos = this.startingDay - this.options.startIn,
 						p = pos < 0 ? 6 + pos + 1 : pos,
+						cellClasses = '',
 						inner = '',
 						today = this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day === this.today.getDate(),
 						content = '';
 					
 					if ( day <= monthLength && ( i > 0 || j >= p ) ) {
+						
+						cellClasses = today ? 'fc-today ' : '';
 
 						inner += '<span class="fc-date">' + day + '</span><span class="fc-weekday">' + this.options.weekabbrs[ j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn ] + '</span>';
 
@@ -174,9 +177,8 @@
 
 					}
 
-					var cellClasses = today ? 'fc-today ' : '';
 					if( content !== '' ) {
-						cellClasses += 'fc-content';
+						cellClasses += ' fc-content';
 					}
 
 					html += cellClasses !== '' ? '<div class="' + cellClasses + '">' : '<div>';
