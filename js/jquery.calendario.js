@@ -173,6 +173,9 @@
 						++day;
 
 					}
+					else {
+						today = false;
+					}
 
 					var cellClasses = today ? 'fc-today ' : '';
 					if( content !== '' ) {
