@@ -300,7 +300,7 @@
 
 		},
 		// goes to month/year
-		goto : function( month, year, callback ) {
+		gotoDirect : function( month, year, callback ) {
 
 			this.month = month - 1;
 			this.year = year;
