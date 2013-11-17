@@ -78,7 +78,7 @@
 						monthname : self.options.displayMonthAbbr ? self.options.monthabbrs[ self.month ] : self.options.months[ self.month ],
 						year : self.year,
 						weekday : idx + self.options.startIn,
-						weekdayname : self.options.weeks[ idx + self.options.startIn ]
+						weekdayname : self.options.weeks[ (idx==6?0:idx + self.options.startIn) ]
 					};
 
 				if( dateProp.day ) {
