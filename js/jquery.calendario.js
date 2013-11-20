@@ -373,9 +373,9 @@
 
 		},
 		// goes to month/year
-		gotoDate : function( month, year, callback ) {
+		gotoMonth : function( month, year, callback ) {
 
-			this.month = month;
+			this.month = month - 1;
 			this.year = year;
 			this._generateTemplate( callback );
 
