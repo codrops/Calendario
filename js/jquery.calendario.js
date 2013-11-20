@@ -173,6 +173,7 @@
 						p = pos < 0 ? 6 + pos + 1 : pos,
 						inner = '',
 						today = this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day === this.today.getDate(),
+						past = this.year < this.today.getFullYear() || this.month < this.today.getMonth() && this.year === this.today.getFullYear() || this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day < this.today.getDate(),
 						content = '';
 					    
 					if ( day <= monthLength && ( i > 0 || j >= p ) ) {
@@ -251,6 +252,9 @@
 					}
 
 					var cellClasses = today ? 'fc-today ' : '';
+					if ( past ) {
+		              cellClasses += 'fc-past ';
+		            }
 					if( content !== '' ) {
 						cellClasses += 'fc-content';
 					}
