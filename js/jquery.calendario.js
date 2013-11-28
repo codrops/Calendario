@@ -206,28 +206,48 @@
 							content += dayDataMonth;
 						}
 						if( dayDataMonthlyYear ) {
-							if(dayDataMonthlyYear['end'] > 0)
+							if( dayDataMonthlyYear['start'] && dayDataMonthlyYear['end'] )
 							{
-								if(day <= dayDataMonthlyYear['end'])
+								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) )
+									content += dayDataMonthlyYear['content'];
+							}
+							else if( dayDataMonthlyYear['start'] > 1 )
+							{
+								if( day >= dayDataMonthlyYear['start'] )
+									content += dayDataMonthlyYear['content'];
+							}
+							else if( dayDataMonthlyYear['end'] > 0 )
+							{
+								if( day <= dayDataMonthlyYear['end'] )
 									content += dayDataMonthlyYear['content'];
 							}
 							else
 							{
-								if(dayDataMonthlyYear['content'])
+								if( dayDataMonthlyYear['content'] )
 									content += dayDataMonthlyYear['content'];
 								else
 									content += dayDataMonthlyYear;
 							}
 						}
 						if( dayDataMonthly ) {
-							if(dayDataMonthly['end'] > 0)
+							if( dayDataMonthly['start'] && dayDataMonthly['end'] )
+							{
+								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) )
+									content += dayDataMonthly['content'];
+							}
+							else if( dayDataMonthly['start'] > 1 )
+							{
+								if( day >= dayDataMonthly['start'] )
+									content += dayDataMonthly['content'];
+							}
+							else if( dayDataMonthly['end'] > 0 )
 							{
 								if(day <= dayDataMonthly['end'])
 									content += dayDataMonthly['content'];
 							}
 							else
 							{
-								if(dayDataMonthly['content'])
+								if( dayDataMonthly['content'] )
 									content += dayDataMonthly['content'];
 								else
 									content += dayDataMonthly;
