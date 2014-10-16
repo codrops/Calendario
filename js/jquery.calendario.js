@@ -149,6 +149,11 @@
 			return html;
 
 		},
+
+		_wrapDay: function (day) {
+			return '<div class="fc-calendar-event">' + day + '</div>';
+		},
+
 		_getBody : function() {
 
 			var d = new Date( this.year, this.month + 1, 0 ),
@@ -197,71 +202,71 @@
 						if( today ) {
 							var dayDataToday = this.caldata[ "TODAY" ];
 							if( dayDataToday )
-								content += dayDataToday;
+								content += this._wrapDay(dayDataToday);
 						}
 						if( dayData ) {
-							content += dayData;
+							content += this._wrapDay(dayData);
 						}
 						if( dayDataMonth ) {
-							content += dayDataMonth;
+							content += this._wrapDay(dayDataMonth);
 						}
 						if( dayDataMonthlyYear ) {
 							if( dayDataMonthlyYear['start'] && dayDataMonthlyYear['end'] )
 							{
 								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) )
-									content += dayDataMonthlyYear['content'];
+									content += this._wrapDay(dayDataMonthlyYear['content']);
 							}
 							else if( dayDataMonthlyYear['start'] > 1 )
 							{
 								if( day >= dayDataMonthlyYear['start'] )
-									content += dayDataMonthlyYear['content'];
+									content += this._wrapDay(dayDataMonthlyYear['content']);
 							}
 							else if( dayDataMonthlyYear['end'] > 0 )
 							{
 								if( day <= dayDataMonthlyYear['end'] )
-									content += dayDataMonthlyYear['content'];
+									content += this._wrapDay(dayDataMonthlyYear['content']);
 							}
 							else
 							{
 								if( dayDataMonthlyYear['content'] )
-									content += dayDataMonthlyYear['content'];
+									content += this._wrapDay(dayDataMonthlyYear['content']);
 								else
-									content += dayDataMonthlyYear;
+									content += this._wrapDay(dayDataMonthlyYear);
 							}
 						}
 						if( dayDataMonthly ) {
 							if( dayDataMonthly['start'] && dayDataMonthly['end'] )
 							{
 								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) )
-									content += dayDataMonthly['content'];
+									content += this._wrapDay(dayDataMonthly['content']);
 							}
 							else if( dayDataMonthly['start'] > 1 )
 							{
 								if( day >= dayDataMonthly['start'] )
-									content += dayDataMonthly['content'];
+									content += this._wrapDay(dayDataMonthly['content']);
 							}
 							else if( dayDataMonthly['end'] > 0 )
 							{
 								if(day <= dayDataMonthly['end'])
-									content += dayDataMonthly['content'];
+									content += this._wrapDay(dayDataMonthly['content']);
 							}
 							else
 							{
 								if( dayDataMonthly['content'] )
-									content += dayDataMonthly['content'];
+									content += this._wrapDay(dayDataMonthly['content']);
 								else
-									content += dayDataMonthly;
+									content += this._wrapDay(dayDataMonthly);
 							}
 						}
 						if( dayDataMonthYear ) {
-							content += dayDataMonthYear;
+							content += this._wrapDay(dayDataMonthYear);
 						}
 						if( dayDataYear ) {
-							content += dayDataYear;
+							content += this._wrapDay(dayDataYear);
 						}
 
 						if( content !== '' ) {
-							inner += '<div>' + content + '</div>';
+							inner += '<div class="fc-calendar-events">' + content + '</div>';
 						}
 
 						++day;
