@@ -228,99 +228,73 @@
 							}
 						}
 						if( dayDataMonthlyYear ) {
-							if( dayDataMonthlyYear['start'] && dayDataMonthlyYear['end'] )
-							{
-								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) ) {
-									if (Array.isArray(dayDataMonthlyYear['content'])) {
-										content += this._convertDayArray(dayDataMonthlyYear['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthlyYear['content']);
-									}
-								}
+							if ( ! Array.isArray(dayDataMonthlyYear)) {
+								dayDataMonthlyYear = [dayDataMonthlyYear];
 							}
-							else if( dayDataMonthlyYear['start'] > 1 )
-							{
-								if( day >= dayDataMonthlyYear['start'] ) {
-									if (Array.isArray(dayDataMonthlyYear['content'])) {
-										content += this._convertDayArray(dayDataMonthlyYear['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthlyYear['content']);
+
+							for (var k = 0; k < dayDataMonthlyYear.length; k++) {
+								if( dayDataMonthlyYear[k]['start'] && dayDataMonthlyYear[k]['end'] )
+								{
+									if( (day >= dayDataMonthlyYear[k]['start']) && (day <= dayDataMonthlyYear[k]['end']) ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
 									}
 								}
-							}
-							else if( dayDataMonthlyYear['end'] > 0 )
-							{
-								if( day <= dayDataMonthlyYear['end'] ) {
-									if (Array.isArray(dayDataMonthlyYear['content'])) {
-										content += this._convertDayArray(dayDataMonthlyYear['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthlyYear['content']);
+								else if( dayDataMonthlyYear[k]['start'] > 1 )
+								{
+									if( day >= dayDataMonthlyYear[k]['start'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
 									}
 								}
-							}
-							else
-							{
-								if( dayDataMonthlyYear['content'] ) {
-									if (Array.isArray(dayDataMonthlyYear['content'])) {
-										content += this._convertDayArray(dayDataMonthlyYear['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthlyYear['content']);
+								else if( dayDataMonthlyYear[k]['end'] > 0 )
+								{
+									if( day <= dayDataMonthlyYear[k]['end'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
 									}
 								}
-								else {
-									if (Array.isArray(dayDataMonthlyYear)) {
-										content += this._convertDayArray(dayDataMonthlyYear);
-									} else {
-										content += this._wrapDay(dayDataMonthlyYear);
+								else
+								{
+									if( dayDataMonthlyYear[k]['content'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
+									}
+									else {
+										content += this._wrapDay(dayDataMonthlyYear[k]);
 									}
 								}
 							}
 						}
 						if( dayDataMonthly ) {
-							if( dayDataMonthly['start'] && dayDataMonthly['end'] )
-							{
-								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) ) {
-									if (Array.isArray(dayDataMonthly['content'])) {
-										content += this._convertDayArray(dayDataMonthly['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthly['content']);
-									}
-								}
+
+							if ( ! Array.isArray(dayDataMonthly)) {
+								dayDataMonthly = [dayDataMonthly];
 							}
-							else if( dayDataMonthly['start'] > 1 )
-							{
-								if( day >= dayDataMonthly['start'] ) {
-									if (Array.isArray(dayDataMonthly['content'])) {
-										content += this._convertDayArray(dayDataMonthly['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthly['content']);
+
+							for (var k = 0; k < dayDataMonthly.length; k++) {
+								if( dayDataMonthly[k]['start'] && dayDataMonthly[k]['end'] )
+								{
+									if( (day >= dayDataMonthly[k]['start']) && (day <= dayDataMonthly[k]['end']) ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
 									}
 								}
-							}
-							else if( dayDataMonthly['end'] > 0 )
-							{
-								if(day <= dayDataMonthly['end']) {
-									if (Array.isArray(dayDataMonthly['content'])) {
-										conten += this._convertDayArray(dayDataMonthly['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthly['content']);
+								else if( dayDataMonthly[k]['start'] > 1 )
+								{
+									if( day >= dayDataMonthly[k]['start'] ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
 									}
 								}
-							}
-							else
-							{
-								if( dayDataMonthly['content'] ) {
-									if (Array.isArray(dayDataMonthly['content'])) {
-										content += this._convertDayArray(dayDataMonthly['content']);
-									} else {
-										content += this._wrapDay(dayDataMonthly['content']);
+								else if( dayDataMonthly[k]['end'] > 0 )
+								{
+									if(day <= dayDataMonthly[k]['end']) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
 									}
 								}
-								else {
-									if (Array.isArray(dayDataMonthly)) {
-										content += this._convertDayArray(dayDataMonthly);
+								else
+								{
+									if( dayDataMonthly[k]['content'] ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
 									}
-									content += this._wrapDay(dayDataMonthly);
+									else {
+										content += this._wrapDay(dayDataMonthly[k]);
+									}
 								}
 							}
 						}
