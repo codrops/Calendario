@@ -154,6 +154,10 @@
 			return '<div class="fc-calendar-event">' + day + '</div>';
 		},
 
+		_convertDayArray: function (day) {
+			return this._wrapDay(day.join('</div><div class="fc-calendar-event">'));
+		},
+
 		_getBody : function() {
 
 			var d = new Date( this.year, this.month + 1, 0 ),
@@ -201,68 +205,138 @@
 						
 						if( today ) {
 							var dayDataToday = this.caldata[ "TODAY" ];
-							if( dayDataToday )
-								content += this._wrapDay(dayDataToday);
+							if( dayDataToday ) {
+								if (Array.isArray(dayDataToday)) {
+									content += this._convertDayArray(dayDataToday);
+								} else {
+									content += this._wrapDay(dayDataToday);
+								}
+							}
 						}
 						if( dayData ) {
-							content += this._wrapDay(dayData);
+							if (Array.isArray(dayData)) {
+								content += this._convertDayArray(dayData);
+							} else {
+								content += this._wrapDay(dayData);
+							}
 						}
 						if( dayDataMonth ) {
-							content += this._wrapDay(dayDataMonth);
+							if (Array.isArray(dayDataMonth)) {
+								content += this._convertDayArray(dayDataMonth);
+							} else {
+								content += this._wrapDay(dayDataMonth);
+							}
 						}
 						if( dayDataMonthlyYear ) {
 							if( dayDataMonthlyYear['start'] && dayDataMonthlyYear['end'] )
 							{
-								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) )
-									content += this._wrapDay(dayDataMonthlyYear['content']);
+								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) ) {
+									if (Array.isArray(dayDataMonthlyYear['content'])) {
+										content += this._convertDayArray(dayDataMonthlyYear['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthlyYear['content']);
+									}
+								}
 							}
 							else if( dayDataMonthlyYear['start'] > 1 )
 							{
-								if( day >= dayDataMonthlyYear['start'] )
-									content += this._wrapDay(dayDataMonthlyYear['content']);
+								if( day >= dayDataMonthlyYear['start'] ) {
+									if (Array.isArray(dayDataMonthlyYear['content'])) {
+										content += this._convertDayArray(dayDataMonthlyYear['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthlyYear['content']);
+									}
+								}
 							}
 							else if( dayDataMonthlyYear['end'] > 0 )
 							{
-								if( day <= dayDataMonthlyYear['end'] )
-									content += this._wrapDay(dayDataMonthlyYear['content']);
+								if( day <= dayDataMonthlyYear['end'] ) {
+									if (Array.isArray(dayDataMonthlyYear['content'])) {
+										content += this._convertDayArray(dayDataMonthlyYear['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthlyYear['content']);
+									}
+								}
 							}
 							else
 							{
-								if( dayDataMonthlyYear['content'] )
-									content += this._wrapDay(dayDataMonthlyYear['content']);
-								else
-									content += this._wrapDay(dayDataMonthlyYear);
+								if( dayDataMonthlyYear['content'] ) {
+									if (Array.isArray(dayDataMonthlyYear['content'])) {
+										content += this._convertDayArray(dayDataMonthlyYear['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthlyYear['content']);
+									}
+								}
+								else {
+									if (Array.isArray(dayDataMonthlyYear)) {
+										content += this._convertDayArray(dayDataMonthlyYear);
+									} else {
+										content += this._wrapDay(dayDataMonthlyYear);
+									}
+								}
 							}
 						}
 						if( dayDataMonthly ) {
 							if( dayDataMonthly['start'] && dayDataMonthly['end'] )
 							{
-								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) )
-									content += this._wrapDay(dayDataMonthly['content']);
+								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) ) {
+									if (Array.isArray(dayDataMonthly['content'])) {
+										content += this._convertDayArray(dayDataMonthly['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthly['content']);
+									}
+								}
 							}
 							else if( dayDataMonthly['start'] > 1 )
 							{
-								if( day >= dayDataMonthly['start'] )
-									content += this._wrapDay(dayDataMonthly['content']);
+								if( day >= dayDataMonthly['start'] ) {
+									if (Array.isArray(dayDataMonthly['content'])) {
+										content += this._convertDayArray(dayDataMonthly['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthly['content']);
+									}
+								}
 							}
 							else if( dayDataMonthly['end'] > 0 )
 							{
-								if(day <= dayDataMonthly['end'])
-									content += this._wrapDay(dayDataMonthly['content']);
+								if(day <= dayDataMonthly['end']) {
+									if (Array.isArray(dayDataMonthly['content'])) {
+										conten += this._convertDayArray(dayDataMonthly['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthly['content']);
+									}
+								}
 							}
 							else
 							{
-								if( dayDataMonthly['content'] )
-									content += this._wrapDay(dayDataMonthly['content']);
-								else
+								if( dayDataMonthly['content'] ) {
+									if (Array.isArray(dayDataMonthly['content'])) {
+										content += this._convertDayArray(dayDataMonthly['content']);
+									} else {
+										content += this._wrapDay(dayDataMonthly['content']);
+									}
+								}
+								else {
+									if (Array.isArray(dayDataMonthly)) {
+										content += this._convertDayArray(dayDataMonthly);
+									}
 									content += this._wrapDay(dayDataMonthly);
+								}
 							}
 						}
 						if( dayDataMonthYear ) {
-							content += this._wrapDay(dayDataMonthYear);
+							if (Array.isArray(dayDataMonthYear)) {
+								content += this._convertDayArray(dayDataMonthYear);
+							} else {
+								content += this._wrapDay(dayDataMonthYear);
+							}
 						}
 						if( dayDataYear ) {
-							content += this._wrapDay(dayDataYear);
+							if (Array.isArray(dayDataYear)) {
+								content += this._convertDayArray(dayDataYear);
+							} else {
+								content += this._wrapDay(dayDataYear);
+							}
 						}
 
 						if( content !== '' ) {
