@@ -12,5 +12,11 @@ var codropsEvents = {
 	'11-DD-2014' : {content : '<span>Ex: {\'11-DD-2014\' : {content : \'Something\', end : 20}}</span>', end : 20},
 	'02-DD-2014' : {content : '<span>Ex: {\'02-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', start : 10, end : 20},
 	'12-DD-YYYY' : '<span>[12-DD-YYYY] Whole month and Year</span>',
-	'TODAY' : '<span>Today, [Date : \'TODAY\']</span>'
+	'TODAY' : '<span>Today, [Date : \'TODAY\']</span>',
+	'10-16-2014': ['<a href="">event one</a>', '<span>event two</span>'],
+	'10-DD-YYYY' : [
+		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', start : 10, end : 20},
+		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', end: 20},
+	]
+
 };

@@ -149,6 +149,15 @@
 			return html;
 
 		},
+
+		_wrapDay: function (day) {
+			return '<div class="fc-calendar-event">' + day + '</div>';
+		},
+
+		_convertDayArray: function (day) {
+			return this._wrapDay(day.join('</div><div class="fc-calendar-event">'));
+		},
+
 		_getBody : function() {
 
 			var d = new Date( this.year, this.month + 1, 0 ),
@@ -196,72 +205,116 @@
 						
 						if( today ) {
 							var dayDataToday = this.caldata[ "TODAY" ];
-							if( dayDataToday )
-								content += dayDataToday;
+							if( dayDataToday ) {
+								if (Array.isArray(dayDataToday)) {
+									content += this._convertDayArray(dayDataToday);
+								} else {
+									content += this._wrapDay(dayDataToday);
+								}
+							}
 						}
 						if( dayData ) {
-							content += dayData;
+							if (Array.isArray(dayData)) {
+								content += this._convertDayArray(dayData);
+							} else {
+								content += this._wrapDay(dayData);
+							}
 						}
 						if( dayDataMonth ) {
-							content += dayDataMonth;
+							if (Array.isArray(dayDataMonth)) {
+								content += this._convertDayArray(dayDataMonth);
+							} else {
+								content += this._wrapDay(dayDataMonth);
+							}
 						}
 						if( dayDataMonthlyYear ) {
-							if( dayDataMonthlyYear['start'] && dayDataMonthlyYear['end'] )
-							{
-								if( (day >= dayDataMonthlyYear['start']) && (day <= dayDataMonthlyYear['end']) )
-									content += dayDataMonthlyYear['content'];
+							if ( ! Array.isArray(dayDataMonthlyYear)) {
+								dayDataMonthlyYear = [dayDataMonthlyYear];
 							}
-							else if( dayDataMonthlyYear['start'] > 1 )
-							{
-								if( day >= dayDataMonthlyYear['start'] )
-									content += dayDataMonthlyYear['content'];
-							}
-							else if( dayDataMonthlyYear['end'] > 0 )
-							{
-								if( day <= dayDataMonthlyYear['end'] )
-									content += dayDataMonthlyYear['content'];
-							}
-							else
-							{
-								if( dayDataMonthlyYear['content'] )
-									content += dayDataMonthlyYear['content'];
+
+							for (var k = 0; k < dayDataMonthlyYear.length; k++) {
+								if( dayDataMonthlyYear[k]['start'] && dayDataMonthlyYear[k]['end'] )
+								{
+									if( (day >= dayDataMonthlyYear[k]['start']) && (day <= dayDataMonthlyYear[k]['end']) ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
+									}
+								}
+								else if( dayDataMonthlyYear[k]['start'] > 1 )
+								{
+									if( day >= dayDataMonthlyYear[k]['start'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
+									}
+								}
+								else if( dayDataMonthlyYear[k]['end'] > 0 )
+								{
+									if( day <= dayDataMonthlyYear[k]['end'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
+									}
+								}
 								else
-									content += dayDataMonthlyYear;
+								{
+									if( dayDataMonthlyYear[k]['content'] ) {
+										content += this._wrapDay(dayDataMonthlyYear[k]['content']);
+									}
+									else {
+										content += this._wrapDay(dayDataMonthlyYear[k]);
+									}
+								}
 							}
 						}
 						if( dayDataMonthly ) {
-							if( dayDataMonthly['start'] && dayDataMonthly['end'] )
-							{
-								if( (day >= dayDataMonthly['start']) && (day <= dayDataMonthly['end']) )
-									content += dayDataMonthly['content'];
+
+							if ( ! Array.isArray(dayDataMonthly)) {
+								dayDataMonthly = [dayDataMonthly];
 							}
-							else if( dayDataMonthly['start'] > 1 )
-							{
-								if( day >= dayDataMonthly['start'] )
-									content += dayDataMonthly['content'];
-							}
-							else if( dayDataMonthly['end'] > 0 )
-							{
-								if(day <= dayDataMonthly['end'])
-									content += dayDataMonthly['content'];
-							}
-							else
-							{
-								if( dayDataMonthly['content'] )
-									content += dayDataMonthly['content'];
+
+							for (var k = 0; k < dayDataMonthly.length; k++) {
+								if( dayDataMonthly[k]['start'] && dayDataMonthly[k]['end'] )
+								{
+									if( (day >= dayDataMonthly[k]['start']) && (day <= dayDataMonthly[k]['end']) ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
+									}
+								}
+								else if( dayDataMonthly[k]['start'] > 1 )
+								{
+									if( day >= dayDataMonthly[k]['start'] ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
+									}
+								}
+								else if( dayDataMonthly[k]['end'] > 0 )
+								{
+									if(day <= dayDataMonthly[k]['end']) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
+									}
+								}
 								else
-									content += dayDataMonthly;
+								{
+									if( dayDataMonthly[k]['content'] ) {
+										content += this._wrapDay(dayDataMonthly[k]['content']);
+									}
+									else {
+										content += this._wrapDay(dayDataMonthly[k]);
+									}
+								}
 							}
 						}
 						if( dayDataMonthYear ) {
-							content += dayDataMonthYear;
+							if (Array.isArray(dayDataMonthYear)) {
+								content += this._convertDayArray(dayDataMonthYear);
+							} else {
+								content += this._wrapDay(dayDataMonthYear);
+							}
 						}
 						if( dayDataYear ) {
-							content += dayDataYear;
+							if (Array.isArray(dayDataYear)) {
+								content += this._convertDayArray(dayDataYear);
+							} else {
+								content += this._wrapDay(dayDataYear);
+							}
 						}
 
 						if( content !== '' ) {
-							inner += '<div>' + content + '</div>';
+							inner += '<div class="fc-calendar-events">' + content + '</div>';
 						}
 
 						++day;
