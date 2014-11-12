@@ -28,6 +28,7 @@
 				<nav class="codrops-demos">
 					<a href="index.html">Demo 1</a>
 					<a class="current-demo" href="index2.html">Demo 2</a>
+					<a href="index3.html">Demo 3</a>
 				</nav>
 			</header>
 			<section class="main">
@@ -46,7 +47,7 @@
 				</div>
 			</section>
 		</div><!-- /container -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.calendario.js"></script>
 		<script type="text/javascript" src="js/data.js"></script>
 		<script type="text/javascript">	
@@ -62,7 +63,7 @@
 					transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
 					$wrapper = $( '#custom-inner' ),
 					$calendar = $( '#calendar' ),
-					cal = $calendar.calendario( {
+					cal = $calendar.calendario({
 						onDayClick : function( $el, $contentEl, dateProperties ) {
 
 							if( $contentEl.length > 0 ) {
