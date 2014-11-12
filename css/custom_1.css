@@ -179,6 +179,10 @@ body {
 	text-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 
+.fc-calendar .fc-row > div > span.fc-emptydate {
+	color: rgba(255,255,255,0.4);
+}
+
 .fc-calendar .fc-body {
 	border: none;
 	padding: 20px;
