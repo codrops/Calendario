@@ -57,11 +57,11 @@
 			// options
 			this.options = $.extend( true, {}, $.Calendario.defaults, options );
 			this.today = new Date();
-			this.month = ( isNaN( this.options.month ) || this.options.month == null) ? this.today.getMonth() : this.options.month - 1;
-			this.year = ( isNaN( this.options.year ) || this.options.year == null) ? this.today.getFullYear() : this.options.year;
+			this.month = ( isNaN( this.options.month ) || this.options.month === null) ? this.today.getMonth() : this.options.month - 1;
+			this.year = ( isNaN( this.options.year ) || this.options.year === null) ? this.today.getFullYear() : this.options.year;
 			this.caldata = this.options.caldata || {};
-			if(parseFloat($().jquery) >= 1.9 && this.options.events.indexOf('hover') != -1) logError('\'hover\' psuedo-name is not supported'
-				+ ' in jQuery 1.9+. Use \'mouseenter\' \'mouseleave\' events instead.');
+			if(parseFloat($().jquery) >= 1.9 && this.options.events.indexOf('hover') != -1) logError('\'hover\' psuedo-name is not supported' +
+			' in jQuery 1.9+. Use \'mouseenter\' \'mouseleave\' events instead.');
 			this.options.events = this.options.events.split(',');
 			this._generateTemplate();
 			this._initEvents();
@@ -90,7 +90,7 @@
 				event[i] = self.options.events[i].toLowerCase().trim();
 				calendarioEventNameFormat[i] = 'onDay' + event[i].charAt(0).toUpperCase() + event[i].slice(1);
 				if(this.options[calendarioEventNameFormat[i]] === undefined)
-					this.options[calendarioEventNameFormat[i]] = function($el, $content, dateProperties) {return false};
+					this.options[calendarioEventNameFormat[i]] = function($el, $content, dateProperties) {return false;};
 				this.$el.on(event[i] + '.calendario', 'div.fc-row > div', function(e) {
 				    if(e.type == 'mouseenter' || e.type == 'mouseleave') {
 						if($.inArray(e.type, event) == -1) type = 'hover';
@@ -145,18 +145,18 @@
 				if ( !Array.isArray(data))
 					data = [data];
 				for (var i = 0; i < data.length; i++) {
-					if( data[i]['start'] && data[i]['end'] ) {
-						if( (day >= data[i]['start']) && (day <= data[i]['end']) ) 
-							content += this._wrapDay(data[i]['content']);
-					} else if( data[i]['start'] > 1 ) {
-						if( day >= data[i]['start'] )
-							content += this._wrapDay(data[i]['content']);
-					} else if( data[i]['end'] > 0 ) {
-						if( day <= data[i]['end'] ) 
-							content += this._wrapDay(data[i]['content']);
+					if( data[i].start && data[i].end ) {
+						if( (day >= data[i].start) && (day <= data[i].end) ) 
+							content += this._wrapDay(data[i].content);
+					} else if( data[i].start > 1 ) {
+						if( day >= data[i].start )
+							content += this._wrapDay(data[i].content);
+					} else if( data[i].end > 0 ) {
+						if( day <= data[i].end ) 
+							content += this._wrapDay(data[i].content);
 					} else {
-						if( data[i]['content'] )
-							content += this._wrapDay(data[i]['content']);
+						if( data[i].content )
+							content += this._wrapDay(data[i].content);
 						else 
 							content += this._wrapDay(data[i]);
 					}
@@ -195,8 +195,8 @@
 						p = pos < 0 ? 6 + pos + 1 : pos,
 						inner = '',
 						today = this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day === this.today.getDate(),
-						past = this.year < this.today.getFullYear() || this.month < this.today.getMonth() && this.year === this.today.getFullYear() 
-						|| this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day < this.today.getDate(),
+						past = this.year < this.today.getFullYear() || this.month < this.today.getMonth() && this.year === this.today.getFullYear() ||
+						this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day < this.today.getDate(),
 						content = '';
 
 					if(this.options.fillEmpty && (j < p || i > 0)) {
@@ -218,8 +218,8 @@
 						// this day is:
 						var strdate = ( this.month + 1 < 10 ? '0' + ( this.month + 1 ) : this.month + 1 ) + '-' + ( day < 10 ? '0' + day : day ) + 
 						'-' + this.year, dayData = this.caldata[ strdate ];
-						var strdateyear = ( this.month + 1 < 10 ? '0' + ( this.month + 1 ) : this.month + 1 ) + '-' + ( day < 10 ? '0' + day : day )
-						+ '-' + 'YYYY', dayDataYear = this.caldata[ strdateyear ];
+						var strdateyear = ( this.month + 1 < 10 ? '0' + ( this.month + 1 ) : this.month + 1 ) + '-' + ( day < 10 ? '0' + day : day ) +
+						'-' + 'YYYY', dayDataYear = this.caldata[ strdateyear ];
 						var strdatemonth = 'MM' + '-' + ( day < 10 ? '0' + day : day ) + '-' + this.year,
 							dayDataMonth = this.caldata[ strdatemonth ];
 						var strdatemonthyear = 'MM' + '-' + ( day < 10 ? '0' + day : day ) + '-' + 'YYYY',
@@ -230,7 +230,7 @@
 							dayDataMonthly = this.caldata[ strdatemonthly ];
 						
 						if( today ) {
-							var dayDataToday = this.caldata[ "TODAY" ];
+							var dayDataToday = this.caldata.TODAY;
 							if( dayDataToday ) {
 								content += this._parseDataToDay( dayDataToday );
 							}
