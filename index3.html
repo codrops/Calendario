@@ -47,13 +47,13 @@
 				</div>
 			</section>
 		</div><!-- /container -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.calendario.js"></script>
 		<script type="text/javascript" src="js/data.js"></script>
-    		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript">	
 			$(function() {
-				var pop_title, $pop_content;
+				var pop_title = '', $pop_content = '';
 				$(document).popover({
 					delay: { show: 100, hide: 200 },
 					html: true,
@@ -79,8 +79,7 @@
 					$wrapper = $( '#custom-inner' ),
 					$calendar = $( '#calendar' ),
 					cal = $calendar.calendario( {
-						onDayHover : function( $el, $contentEl, dateProperties ) {
-
+						onDayMouseenter : function( $el, $contentEl, dateProperties ) {
 							if( $contentEl.length > 0 ) {
 								pop_title = dateProperties.monthname + ' ' + dateProperties.day + ', ' + dateProperties.year;
 								$pop_content = $contentEl;
@@ -88,7 +87,9 @@
 
 						},
 						caldata : codropsEvents,
-						displayWeekAbbr : true
+						events: 'mouseenter',
+						displayWeekAbbr : true,
+						fillEmpty: false
 					} ),
 					$month = $( '#custom-month' ).html( cal.getMonthName() ),
 					$year = $( '#custom-year' ).html( cal.getYear() );

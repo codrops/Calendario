@@ -1,5 +1,5 @@
 body {
-    background: #f9f9f9 url(../images/bg-1.png);
+    background: url(../images/bg.jpg);
 }
 
 /* Custom calendar elements */
@@ -229,6 +229,10 @@ body {
 	color: #686a6e;
 	font-weight: 400;
 	pointer-events: none;
+}
+
+.fc-calendar .fc-row > div > span.fc-emptydate {
+	color: #ccc;
 }
 
 .fc-calendar .fc-row > div.fc-content {
@@ -553,10 +557,10 @@ body {
 }
 
 @media screen and (max-width: 400px) {
-	.fc-calendar-container {
-		height: 300px;
-	}
-	.fc-calendar .fc-row > div > span.fc-date {
-		font-size: 15px;
-	}
+    .fc-calendar-container {
+        height: 300px;
+    }
+    .fc-calendar .fc-row > div > span.fc-date {
+        font-size: 15px;
+    }
 }
