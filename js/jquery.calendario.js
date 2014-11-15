@@ -1,5 +1,5 @@
 /**
- * jquery.calendario.js v3.0.0
+ * jquery.calendario.js v3.1.0
  * http://www.codrops.com
  *
  * Licensed under the MIT license.
@@ -49,12 +49,16 @@
 		// 0 - Sunday, 1 - Monday, ... , 6 - Saturday
 		startIn : 1,
 		events: 'click',
-		fillEmpty: true
+		fillEmpty: true,
+		// Follow the norms http://wwp.greenwichmeantime.com/info/timezone.htm
+		feedParser: './feed/',
+		zone: '+05:30' // IST time
 	};
 
 	$.Calendario.prototype = {
 		_init : function( options ) {
 			// options
+			this.VERSION = '3.1.0 beta';
 			this.options = $.extend( true, {}, $.Calendario.defaults, options );
 			this.today = new Date();
 			this.month = ( isNaN( this.options.month ) || this.options.month === null) ? this.today.getMonth() : this.options.month - 1;
@@ -63,28 +67,46 @@
 			if(parseFloat($().jquery) >= 1.9 && this.options.events.indexOf('hover') != -1) logError('\'hover\' psuedo-name is not supported' +
 			' in jQuery 1.9+. Use \'mouseenter\' \'mouseleave\' events instead.');
 			this.options.events = this.options.events.split(',');
+			this.options.zone = this.options.zone.charAt(0) != '+' && this.options.zone.charAt(0) != '-' ? '+' + this.options.zone : 
+				this.options.zone;
 			this._generateTemplate();
 			this._initEvents();
+			this.$el.trigger($.Event('shown.calendario'));
 		},
 		
 		_propDate: function($cell, event) {
-			var self = this,
-			idx = $cell.index(),
-			$content = $cell.children( 'div' ),
+			var idx = $cell.index(),
+			content = [],
 			dateProp = {
 				day : $cell.children( 'span.fc-date' ).text(),
-				month : self.month + 1,
-				monthname : self.options.displayMonthAbbr ? self.options.monthabbrs[ self.month ] : self.options.months[ self.month ],
-				year : self.year,
-				weekday : idx + self.options.startIn,
-				weekdayname : self.options.weeks[ (idx==6?0:idx + self.options.startIn) ]
-			};
+				month : this.month + 1,
+				monthname : this.options.displayMonthAbbr ? this.options.monthabbrs[ this.month ] : this.options.months[ this.month ],
+				year : this.year,
+				weekday : idx + this.options.startIn,
+				weekdayname : this.options.weeks[ (idx==6?0:idx + this.options.startIn) ]
+			},
+			startTime = [],
+			endTime = [],
+			allDay = [];
+			$cell.children( 'div.fc-calendar-events').children('div.fc-calendar-event').each(function(i, e){
+				if($(e).find('time').length > 0) {
+					startTime[i] = new Date($(e).find('time.fc-starttime').attr('datetime'));
+					endTime[i] = new Date($(e).find('time.fc-endtime').attr('datetime'));
+					allDay[i] = $(e).find('time.fc-allday').text().trim() === 'true' ? true : false;
+				}
+				var save = $(e).find('time').detach();
+				content[i] = $(e).html();
+				$(e).append(save);
+			});
+			dateProp['startTime'] = startTime;
+			dateProp['endTime'] = endTime;
+			dateProp['allDay'] = allDay;
 			if( dateProp.day )
-				self.options[event]( $cell, $content, dateProp );
+				this.options[event]( $cell, content, dateProp );
 		},
 		
 		_initEvents : function() {
-			var self = this, event = [], calendarioEventNameFormat = [], type = '';
+			var self = this, event = [], calendarioEventNameFormat = [];
 			for(var i = 0; i < self.options.events.length; i++)
 			{
 				event[i] = self.options.events[i].toLowerCase().trim();
@@ -93,12 +115,9 @@
 					this.options[calendarioEventNameFormat[i]] = function($el, $content, dateProperties) {return false;};
 				this.$el.on(event[i] + '.calendario', 'div.fc-row > div', function(e) {
 				    if(e.type == 'mouseenter' || e.type == 'mouseleave') {
-						if($.inArray(e.type, event) == -1) type = 'hover';
-						else type = e.type;
-					} else { 
-						type = e.type;
+						if($.inArray(e.type, event) == -1) e.type = 'hover';
 					}
-					self._propDate($(this), calendarioEventNameFormat[$.inArray(type, event)]);
+					self._propDate($(this), calendarioEventNameFormat[$.inArray(e.type, event)]);
 				});
 			}
 		},
@@ -116,6 +135,7 @@
 			this.$cal = $( '<div class="fc-calendar ' + rowClass + '">' ).append( head, body );
 			this.$el.find( 'div.fc-calendar' ).remove().end().append( this.$cal );
 			this.$el.find('.fc-emptydate').parent().css({'background':'transparent', 'cursor':'default'});
+			this.$el.trigger($.Event('shown.calendario'));
 			if( callback ) { callback.call(); }
 		},
 		
@@ -133,43 +153,75 @@
 			return html;
 		},
 		
-		_parseDataToDay : function (data, day) {
+		_parseDataToDay : function (data, day, other) {
 			var content = '';
-			if( !day ) {
+			if( !other ) {
 				if (Array.isArray(data)) 
-					return this._convertDayArray(data);
+					content = this._convertDayArray(data, day);
 				else 
-					return this._wrapDay(data);
+					content = this._wrapDay(data, day, true);
 
 			} else {
 				if ( !Array.isArray(data))
 					data = [data];
 				for (var i = 0; i < data.length; i++) {
-					if( data[i].start && data[i].end ) {
-						if( (day >= data[i].start) && (day <= data[i].end) ) 
-							content += this._wrapDay(data[i].content);
-					} else if( data[i].start > 1 ) {
-						if( day >= data[i].start )
-							content += this._wrapDay(data[i].content);
-					} else if( data[i].end > 0 ) {
-						if( day <= data[i].end ) 
-							content += this._wrapDay(data[i].content);
+					if( data[i].startDate && data[i].endDate ) {
+						if( (day >= data[i].startDate) && (day <= data[i].endDate) ) 
+							content += this._wrapDay(data[i].content, day, true);
+					} else if( data[i].startDate > 1 ) {
+						if( day >= data[i].startDate )
+							content += this._wrapDay(data[i].content, day, true);
+					} else if( data[i].endDate > 0 ) {
+						if( day <= data[i].endDate ) 
+							content += this._wrapDay(data[i].content, day, true);
 					} else {
 						if( data[i].content )
-							content += this._wrapDay(data[i].content);
+							content += this._wrapDay(data[i].content, day, true);
 						else 
-							content += this._wrapDay(data[i]);
+							content += this._wrapDay(data[i], day, true);
 					}
 				}
-				return content;
 			}
+			return content;
 		},
 		
-		_wrapDay: function (day) {
-			return '<div class="fc-calendar-event">' + day + '</div>';
+		_toDateTime : function(time, day, end) {
+			var zoneH = parseInt(this.options.zone.split(':')[0]),
+				zoneM = parseInt(this.options.zone.charAt(0) + this.options.zone.split(':')[1]),
+				hour = parseInt(time.split(':')[0]) - zoneH,
+				minutes = parseInt(time.split(':')[1]) - zoneM,
+				d = new Date(Date.UTC(this.year, this.month, day, hour, minutes, 0, 0));
+			if(end && d.getHours() == 0) d =  new Date(Date.UTC(this.year, this.month, day + 1, hour, minutes, 0, 0));
+			return d.toISOString();
 		},
 		
-		_convertDayArray: function (day) {
+		_timeHtml : function(day, date){
+			var content = '';
+			if(typeof day !== 'object') day = {content: day, allDay: true};
+			if(day.content) content = day.content;
+			if(day.allDay) {
+				day['startTime'] = '00:00';
+				day['endTime'] = '23:59';
+				content += '<time class="fc-allday">' + day.allDay + '</time>';
+			} else content += '<time class="fc-allday">false</time>'
+			if(day.startTime) content += '<time class="fc-starttime" datetime="' + this._toDateTime(day.startTime, date) + '">' + day.startTime + 
+				'</time>';
+			if(day.endTime) content += '<time class="fc-endtime" datetime="' + this._toDateTime(day.endTime, date, true) + '">' + day.endTime +
+				'</time>';
+			return content;
+		},
+		
+		_wrapDay: function (day, date, wrap) {
+			if(date) {
+				if(wrap) return '<div class="fc-calendar-event">' + this._timeHtml(day, date) + '</div>';
+				else return this._timeHtml(day, date);
+			} else return '<div class="fc-calendar-event">' + day + '</div>'
+		},
+		
+		_convertDayArray: function (day, date) {
+			for(var i = 0; i < day.length; i++) {
+				day[i] = this._wrapDay(day[i], date, false);
+			}
 			return this._wrapDay(day.join('</div><div class="fc-calendar-event">'));
 		},
 		
@@ -177,7 +229,7 @@
 			var d = new Date( this.year, this.month + 1, 0 ),
 				// number of days in the month
 				monthLength = d.getDate(),
-				firstDay = new Date( this.year, this.month, 1 ),
+				firstDay = new Date( this.year, d.getMonth(), 1 ),
 				pMonthLength = new Date( this.year, this.month, 0 ).getDate();
 
 			// day of the week
@@ -232,21 +284,21 @@
 						if( today ) {
 							var dayDataToday = this.caldata.TODAY;
 							if( dayDataToday ) {
-								content += this._parseDataToDay( dayDataToday );
+								content += this._parseDataToDay( dayDataToday, day );
 							}
 						}
 						if( dayData ) 
-							content += this._parseDataToDay( dayData );
+							content += this._parseDataToDay( dayData, day );
 						if( dayDataMonth ) 
-							content += this._parseDataToDay( dayDataMonth );
+							content += this._parseDataToDay( dayDataMonth, day );
 						if( dayDataMonthlyYear ) 
-							content += this._parseDataToDay( dayDataMonthlyYear, day );
+							content += this._parseDataToDay( dayDataMonthlyYear, day, true );
 						if( dayDataMonthly ) 
-							content += this._parseDataToDay( dayDataMonthly, day );
+							content += this._parseDataToDay( dayDataMonthly, day, true );
 						if( dayDataMonthYear )
-							content += this._parseDataToDay( dayDataMonthYear );
+							content += this._parseDataToDay( dayDataMonthYear, day );
 						if( dayDataYear )
-							content += this._parseDataToDay( dayDataYear );
+							content += this._parseDataToDay( dayDataYear, day );
 
 						if( content !== '' )
 							inner += '<div class="fc-calendar-events">' + content + '</div>';
@@ -351,6 +403,16 @@
 		},
 		gotoNextYear : function( callback ) {
 			this._move( 'year', 'next', callback );
+		},
+		feed : function( callback ) {
+			var self = this;
+			$.post( self.options.feedParser, {dates: this.caldata})
+			.always(function( data ){
+				if(callback) callback.call(this, JSON.parse(data).hevent);
+			});
+		},
+		version : function() {
+			return this.options.VERSION;
 		}
 	};
 	
