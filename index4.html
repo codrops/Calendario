@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Blueprint: Vertical Timeline</title>
+		<meta name="description" content="Blueprint: Vertical Timeline" />
+		<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/timeline.css" />
+		<link rel="stylesheet" type="text/css" href="css/calendar.css" />
+		<link rel="stylesheet" type="text/css" href="css/custom_4.css" />
+		<script src="js/modernizr.custom.63321.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<!-- Codrops top bar -->
+			<div class="codrops-top clearfix" style="text-align: center;">
+				<a href="http://tympanus.net/Development/Stapel/" style="float: left"><strong>&laquo; Previous Demo: </strong>Adaptive Thumbnail Pile Effect</a>
+				<a id="view" href="#">View Calendar</a>
+				<span class="right">
+					<a href="http://tympanus.net/codrops/?p=12416"><strong>Back to the Codrops Article</strong></a>
+				</span>
+			</div><!--/ Codrops top bar -->
+			<div class="main">
+				<div class="custom-calendar-wrap">
+					<div id="custom-inner" class="custom-inner">
+						<div class="custom-header clearfix">
+							<nav>
+								<span id="custom-prev" class="custom-prev"></span>
+								<span id="custom-next" class="custom-next"></span>
+							</nav>
+							<h2 id="custom-month" class="custom-month"></h2>
+							<h3 id="custom-year" class="custom-year"></h3>
+						</div>
+						<div id="calendar" class="fc-calendar-container"></div>
+					</div>
+				</div>
+				<header class="clearfix">
+					<h1>Calendario <span>It just got more flexible</span></h1>
+					<nav class="codrops-demos">
+						<a href="index.html">Demo 1</a>
+						<a href="index2.html">Demo 2</a>
+						<a href="index3.html">Demo 3</a>
+						<a class="current-demo" href="index4.html">Demo 4</a>
+					</nav>
+				</header>
+				<ul class="cbp_tmtimeline">
+					<li class="all-day">
+						<time class="cbp_tmtime" datetime="all-day"><span>all-day</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="00:00"><span>00:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="01:00"><span>01:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="02:00"><span>02:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="03:00"><span>03:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="04:00"><span>04:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="05:00"><span>05:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="06:00"><span>06:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="07:00"><span>07:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="08:00"><span>08:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="09:00"><span>09:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="10:00"><span>10:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="11:00"><span>11:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="12:00"><span>12:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="13:00"><span>13:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="14:00"><span>14:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="15:00"><span>15:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="16:00"><span>16:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="17:00"><span>17:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="18:00"><span>18:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="19:00"><span>19:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="20:00"><span>20:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="21:00"><span>21:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="22:00"><span>22:00</span></time>
+					</li>
+					<li>
+						<time class="cbp_tmtime" datetime="23:00"><span>23:00</span></time>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.calendario.js"></script>
+		<script type="text/javascript" src="js/dataTimeline.js"></script>
+		<script>
+			(function($){
+				$(window).load(function(){
+					var once = false;					
+					$(document).on('shown.calendar.calendario', function(e){
+						if(!once) {
+							$('.custom-calendar-wrap').slideUp();
+							init();
+							once = true;
+						}
+						$calendar.find('.fc-today').trigger('custom.calendario');
+					});
+					
+					$('#view').on('click calClick', function(e){
+						e.preventDefault();
+						$('.custom-calendar-wrap').slideToggle();
+					});
+					
+					var transEndEventNames = {
+						'WebkitTransition' : 'webkitTransitionEnd',
+						'MozTransition' : 'transitionend',
+						'OTransition' : 'oTransitionEnd',
+						'msTransition' : 'MSTransitionEnd',
+						'transition' : 'transitionend'
+					},
+					transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+					$wrapper = $( '#custom-inner' ),
+					$calendar = $( '#calendar' ),
+					cal = $calendar.calendario({
+						onDayClick : function( $el, content, dateProperties ) {
+
+							if( content.length > 0 ) {
+								if(dateProperties.startTime.length > 0) {
+									$('#view').trigger('calClick');
+									reset();
+									for(var i = 0; i < dateProperties.startTime.length; i++) {
+										if(dateProperties.allDay[i]) allDay(content[i]);
+										else date(content[i], dateProperties.startTime[i], dateProperties.endTime[i]);
+									}
+								}
+							}
+
+						},
+						onDayCustom : function( $el, content, dateProperties ) {
+							if( content.length > 0 ) {
+								if(dateProperties.startTime.length > 0) {
+									reset();
+									for(var i = 0; i < dateProperties.startTime.length; i++) {
+										if(dateProperties.allDay[i]) allDay(content[i]);
+										else date(content[i], dateProperties.startTime[i], dateProperties.endTime[i]);
+									}
+								}
+							}
+						},
+						caldata : timelineEvents,
+						displayWeekAbbr : true,
+						events: 'click, custom'
+					}),
+					$month = $( '#custom-month' ).html( cal.getMonthName() ),
+					$year = $( '#custom-year' ).html( cal.getYear() );
+
+					$( '#custom-next' ).on( 'click', function() {
+						cal.gotoNextMonth( updateMonthYear );
+					});
+					$( '#custom-prev' ).on( 'click', function() {
+						cal.gotoPreviousMonth( updateMonthYear );
+					});
+					
+					function init() {
+						var d = new Date(), time, hour;
+						$('ul > li:not(.all-day)').each(function(i, e){
+							time = $(e).find('time').attr('datetime');
+							hour = parseInt(time.split(':')[0]);
+							d.setHours(hour, 0, 0, 0);
+							$(e).find('time').attr('datetime', d.toISOString());
+							if(hour < 10) $(e).find('time > span').html('0' + hour + ':' + '00<h6>AM</h6>');
+							else if(hour < 12 && hour >= 10) $(e).find('time > span').html(hour + ':' + '00<h6>AM</h6>');
+							else if(hour == 12) $(e).find('time > span').html(hour + ':' + '00<h6>PM</h6>');
+							else if(hour < 22 && hour > 12) $(e).find('time > span').html('0' + (hour - 12) + ':' + '00<h6>PM</h6>');
+							else if(hour >= 22) $(e).find('time > span').html((hour - 12) + ':' + '00<h6>PM</h6>');
+						});
+					}
+					
+					function updateMonthYear() {				
+						$month.html( cal.getMonthName() );
+						$year.html( cal.getYear() );
+					}
+
+					function allDay(content) {				
+						$('li.all-day').append('<div class="cbp_tmlabel">' + content + '</div>');
+					}
+					
+					function date(content, start, end) {				
+						var pos = start.getHours() + 2,
+							top = ((start.getMinutes() / 60) * 200) == 0 ? '-1px' :  ((start.getMinutes() / 60) * 200) - 1 + 'px',
+							height = ((((end.getTime() - start.getTime()) / (60 * 1000 * 60)) * 200) - 1) + 'px',
+							append = '<div class="cbp_tmlabel" style="top:'+ top + ';height:' + height + '; max-height:' + height + '">' +
+								content + '</div>';
+						$('ul > li:nth-child(' + pos +')').append(append);
+					}
+					
+					function reset() {				
+						$('li.all-day').find('div.cbp_tmlabel').remove();
+					}
+				});
+			})(jQuery);
+	</script>
+	</body>
+</html>
