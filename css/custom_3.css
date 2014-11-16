@@ -117,83 +117,6 @@ body {
 	color: #495468;
 }
 
-.custom-content-reveal {
-	background: #f6f6f6;
-	background: rgba(246, 246, 246, 0.9);
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	z-index: 100;
-	top: 100%;
-	left: 0px;
-	text-align: center;
-	-webkit-transition: all 0.6s ease-in-out;
-	-moz-transition: all 0.6s ease-in-out;
-	-o-transition: all 0.6s ease-in-out;
-	-ms-transition: all 0.6s ease-in-out;
-	transition: all 0.6s ease-in-out;
-}
-
-.custom-content-reveal span.custom-content-close {
-	position: absolute;
-	top: 15px;
-	right: 10px;
-	width: 20px;
-	height: 20px;
-	text-align: center;
-	background: #ef4f69;
-	box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-	cursor: pointer;
-	line-height: 13px;
-	padding: 0;
-}
-
-.custom-content-reveal span.custom-content-close:after {
-	content: 'x';
-	font-size: 18px;
-	color: #fff;
-}
-
-.custom-content-reveal a,
-.custom-content-reveal span {
-	font-size: 22px;
-	padding: 10px 30px;
-	display: block;
-}
-
-.custom-content-reveal h4 {
-	text-transform: uppercase;
-	font-size: 13px;
-	font-weight: 300;
-	letter-spacing: 3px;
-	color: #fff;
-	padding: 20px;
-	background: #fff;
-	background: -moz-linear-gradient(-45deg, #cebe29 0%, #9b1f50 33%, #2989d8 71%, #89b4ff 91%);
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#cebe29), color-stop(33%,#9b1f50), color-stop(71%,#2989d8), color-stop(91%,#89b4ff));
-	background: -webkit-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
-	background: -o-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
-	background: -ms-linear-gradient(-45deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
-	background: linear-gradient(135deg, #cebe29 0%,#9b1f50 33%,#2989d8 71%,#89b4ff 91%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cebe29', endColorstr='#89b4ff',GradientType=1 );
-	border-bottom: 1px solid #ddd;
-	border-top: 5px solid #cebe29;
-	box-shadow: 0 1px rgba(255,255,255,0.9);
-	margin-bottom: 30px;
-}
-
-.custom-content-reveal span {
-	color: #888;
-}
-
-.custom-content-reveal a {
-	color: #ef4f69;
-}
-
-.custom-content-reveal a:hover {
-	color: #333;
-}
-
 /* Modifications */
 
 .fc-calendar-container {
@@ -459,6 +382,10 @@ body {
 	display: block;
 }
 
+.popover-content time {
+	display: none;
+}
+
 .popover .arrow,
 .popover .arrow:after {
   position: absolute;
@@ -557,10 +484,10 @@ body {
 }
 
 @media screen and (max-width: 400px) {
-    .fc-calendar-container {
-        height: 300px;
-    }
-    .fc-calendar .fc-row > div > span.fc-date {
-        font-size: 15px;
-    }
+	.fc-calendar-container {
+		height: 300px;
+	}
+	.fc-calendar .fc-row > div > span.fc-date {
+		font-size: 15px;
+	}
 }
