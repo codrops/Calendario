@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-		<title>Blueprint: Vertical Timeline</title>
+		<title>Flexible Calendar</title>
 		<meta name="description" content="Blueprint: Vertical Timeline" />
 		<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
 		<meta name="author" content="Codrops" />
@@ -132,7 +132,12 @@
 		<script>
 			(function($){
 				$(window).load(function(){
-					var once = false;					
+					var once = false,
+						d = new Date(),
+						zoneH = parseInt(d.getTimezoneOffset() / 60),
+						zoneM = parseInt(d.getTimezoneOffset() % 60),
+						zoneS = (zoneH < 0 ? '+' : '-') + (Math.abs(zoneH) < 10 ? '0' + Math.abs(zoneH) : Math.abs(zoneH)) + ':' +
+						(Math.abs(zoneM) < 10 ? '0' + Math.abs(zoneM) : Math.abs(zoneM));
 					$(document).on('shown.calendar.calendario', function(e){
 						if(!once) {
 							$('.custom-calendar-wrap').slideUp();
@@ -185,7 +190,8 @@
 						},
 						caldata : timelineEvents,
 						displayWeekAbbr : true,
-						events: 'click, custom'
+						events: 'click, custom',
+						zone: zoneS
 					}),
 					$month = $( '#custom-month' ).html( cal.getMonthName() ),
 					$year = $( '#custom-year' ).html( cal.getYear() );
