@@ -1,5 +1,3 @@
-@import url('demo.css');
-
 @font-face {
   font-family: 'fontawesome-selected';
   src: url("../font/fontawesome-selected.eot");
@@ -96,6 +94,10 @@
 	bottom: 5px;
 	right: 5px;
 	text-align: right;
+}
+
+.fc-calendar .fc-row > div time {
+	display: none;
 }
 
 .fc-calendar .fc-row > div > span.fc-weekday {

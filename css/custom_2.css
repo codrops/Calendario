@@ -172,6 +172,10 @@
 	color: #ef4f69;
 }
 
+.custom-content-reveal time{
+	display: none;
+}
+
 .custom-content-reveal a:hover {
 	color: #333;
 }

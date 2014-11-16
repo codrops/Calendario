@@ -10,6 +10,7 @@
 		<meta name="keywords" content="responsive, calendar, jquery, plugin, full page, flexible, javascript, css3, media queries" />
 		<meta name="author" content="Codrops" />
 		<link rel="shortcut icon" href="../favicon.ico"> 
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/calendar.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom_2.css" />
 		<script src="js/modernizr.custom.63321.js"></script>
@@ -24,11 +25,12 @@
 				</span>
 			</div><!--/ Codrops top bar -->
 			<header class="clearfix">
-				<h1>Flexible Calendar <span>with jQuery and CSS3</span></h1>
+				<h1>Calendario <span>It just got more flexible</span></h1>
 				<nav class="codrops-demos">
 					<a href="index.html">Demo 1</a>
 					<a class="current-demo" href="index2.html">Demo 2</a>
 					<a href="index3.html">Demo 3</a>
+					<a href="index4.html">Demo 4</a>
 				</nav>
 			</header>
 			<section class="main">
@@ -52,6 +54,9 @@
 		<script type="text/javascript" src="js/data.js"></script>
 		<script type="text/javascript">	
 			$(function() {
+				$(document).on('shown.calendar.calendario', function(e){
+					$calendar.find('.fc-today').trigger('click.calendario');
+				});
 			
 				var transEndEventNames = {
 						'WebkitTransition' : 'webkitTransitionEnd',
@@ -64,15 +69,20 @@
 					$wrapper = $( '#custom-inner' ),
 					$calendar = $( '#calendar' ),
 					cal = $calendar.calendario({
-						onDayClick : function( $el, $contentEl, dateProperties ) {
+						onDayClick : function( $el, contentEl, dateProperties ) {
 
-							if( $contentEl.length > 0 ) {
-								showEvents( $contentEl, dateProperties );
+							if( contentEl.length > 0 ) {
+								if(dateProperties.startTime.length > 0) {
+									console.log(dateProperties.startTime);
+									console.log(dateProperties.endTime);
+								}
+								showEvents( contentEl, dateProperties );
 							}
 
 						},
 						caldata : codropsEvents,
-						displayWeekAbbr : true
+						displayWeekAbbr : true,
+						events: 'click'
 					} ),
 					$month = $( '#custom-month' ).html( cal.getMonthName() ),
 					$year = $( '#custom-year' ).html( cal.getYear() );
@@ -90,14 +100,14 @@
 				}
 
 				// just an example..
-				function showEvents( $contentEl, dateProperties ) {
+				function showEvents( contentEl, dateProperties ) {
 
 					hideEvents();
 					
 					var $events = $( '<div id="custom-content-reveal" class="custom-content-reveal"><h4>Events for ' + dateProperties.monthname + ' ' + dateProperties.day + ', ' + dateProperties.year + '</h4></div>' ),
 						$close = $( '<span class="custom-content-close"></span>' ).on( 'click', hideEvents );
 
-					$events.append( $contentEl.html() , $close ).insertAfter( $wrapper );
+					$events.append( contentEl.join('') , $close ).insertAfter( $wrapper );
 					
 					setTimeout( function() {
 						$events.css( 'top', '0%' );

@@ -10,6 +10,7 @@
 		<meta name="keywords" content="responsive, calendar, jquery, plugin, full page, flexible, javascript, css3, media queries" />
 		<meta name="author" content="Codrops" />
 		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/calendar.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom_3.css" />
 		<script src="js/modernizr.custom.63321.js"></script>
@@ -29,6 +30,7 @@
 					<a href="index.html">Demo 1</a>
                     <a href="index2.html">Demo 2</a>
 					<a class="current-demo" href="index3.html">Demo 3</a>
+					<a href="index4.html">Demo 4</a>
 				</nav>
 			</header>
 			<section class="main">
@@ -53,7 +55,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript">	
 			$(function() {
-				var pop_title = '', $pop_content = '';
+				var pop_title = '', pop_content = '';
 				$(document).popover({
 					delay: { show: 100, hide: 200 },
 					html: true,
@@ -61,7 +63,7 @@
 					selector: 'div.fc-content',
 					placement: 'auto',
 					content: function() {
-							 	return $pop_content.html();
+							 	return pop_content;
 							 },
 					title: function() {
 						   		return pop_title;
@@ -79,12 +81,12 @@
 					$wrapper = $( '#custom-inner' ),
 					$calendar = $( '#calendar' ),
 					cal = $calendar.calendario( {
-						onDayMouseenter : function( $el, $contentEl, dateProperties ) {
-							if( $contentEl.length > 0 ) {
+						onDayMouseenter : function( $el, content, dateProperties ) {
+							if( content.length > 0 ) {
 								pop_title = dateProperties.monthname + ' ' + dateProperties.day + ', ' + dateProperties.year;
-								$pop_content = $contentEl;
+								pop_content = content.join('');
+								cal.feed(logFeed);
 							}
-
 						},
 						caldata : codropsEvents,
 						events: 'mouseenter',
@@ -104,7 +106,11 @@
 				function updateMonthYear() {				
 					$month.html( cal.getMonthName() );
 					$year.html( cal.getYear() );
-				}			
+				}
+
+				function logFeed( data ) {				
+					console.log(data);
+				}
 			});
 		</script>
 	</body>
