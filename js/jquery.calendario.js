@@ -12,6 +12,7 @@
  * Calendario gets more flexible : Boží Ďábel (https://github.com/deviprsd21) (https://github.com/codrops/Calendario/pull/11)
  * Multiple Events : Mattias Lyckne (https://github.com/olyckne) (https://github.com/codrops/Calendario/pull/22)
  * Flexibility In-built : Boží Ďábel (https://github.com/deviprsd21) (https://github.com/codrops/Calendario/pull/23)
+ * Now with Time : Boží Ďábel (https://github.com/deviprsd21) (https://github.com/codrops/Calendario/pull/25)
  */
 ;(function($, window, undefined){ 
   'use strict';
@@ -122,7 +123,7 @@
         
     _checkUpdate : function() {
       var self = this;
-      $.getScript("https://raw.githubusercontent.com/deviprsd21/Calendario/master/js/update.js")
+      $.getScript("https://raw.githubusercontent.com/codrops/Calendario/master/js/update.js")
       .done(function( script, textStatus ) {
         if(calendario.previous == self.version() || parseFloat(calendario.current) > parseFloat(self.version())) 
           console.info(calendario.msg);
