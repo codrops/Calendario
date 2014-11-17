@@ -56,7 +56,8 @@
             $(function() {
                 $(document).on('shown.calendar.calendario', function(e, instance){
                     if(!instance) instance = cal;
-                    instance.getCell(new Date().getDate()).trigger('click.calendario');
+                    var $cell = instance.getCell(new Date().getDate());
+                    if($cell.hasClass('fc-today')) $cell.trigger('click.calendario');
                 });
             
                 var transEndEventNames = {
