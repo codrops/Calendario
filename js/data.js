@@ -16,7 +16,7 @@ var codropsEvents = {
 	'10-16-2014': ['<a href="">event one</a>', '<span>event two</span>'],
 	'10-DD-YYYY' : [
 		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', startDate : 10, endDate : 20}}</span>', startDate : 10, endDate : 20},
-		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', startDate : 10, endDate : 20}}</span>', endDate: 20},
+		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', endDate : 20}}</span>', endDate: 20},
 	]
 
 };
