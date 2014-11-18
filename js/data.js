@@ -9,14 +9,14 @@ var codropsEvents = {
 	'01-01-YYYY' : '<span>New Year\'s Eve (Event repeats every YEAR)</span>',
 	'MM-02-2013' : '<span>Yeah, Monthly [MM-02-2013]</span>',
 	'MM-07-YYYY' : '<span>[MM-07-YYYY], Monthly and Yearly</span>',
-	'11-DD-2014' : {content : '<span>Ex: {\'11-DD-2014\' : {content : \'Something\', end : 20}}</span>', end : 20},
-	'02-DD-2014' : {content : '<span>Ex: {\'02-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', start : 10, end : 20},
+	'11-DD-2014' : {content : '<span>Ex: {\'11-DD-2014\' : {content : \'Something\', endDate : 20}}</span>', endDate : 20},
+	'02-DD-2014' : {content : '<span>Ex: {\'02-DD-2014\' : {content : \'Something\', startDate : 10, endDate : 20}}</span>', startDate : 10, endDate : 20},
 	'12-DD-YYYY' : '<span>[12-DD-YYYY] Whole month and Year</span>',
 	'TODAY' : '<span>Today, [Date : \'TODAY\']</span>',
 	'10-16-2014': ['<a href="">event one</a>', '<span>event two</span>'],
 	'10-DD-YYYY' : [
-		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', start : 10, end : 20},
-		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', start : 10, end : 20}}</span>', end: 20},
+		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', startDate : 10, endDate : 20}}</span>', startDate : 10, endDate : 20},
+		{content : '<span>Ex: {\'10-DD-2014\' : {content : \'Something\', endDate : 20}}</span>', endDate: 20},
 	]
 
 };
