@@ -71,14 +71,10 @@
                     $wrapper = $( '#custom-inner' ),
                     $calendar = $( '#calendar' ),
                     cal = $calendar.calendario({
-                        onDayClick : function( $el, contentEl, dateProperties ) {
+                        onDayClick : function( $el, data, dateProperties ) {
 
-                            if( contentEl.length > 0 ) {
-                                if(dateProperties.startTime.length > 0) {
-                                    console.log(dateProperties.startTime);
-                                    console.log(dateProperties.endTime);
-                                }
-                                showEvents( contentEl, dateProperties );
+                            if(data.content.length > 0 ) {
+                                showEvents(data.content, dateProperties );
                             }
 
                         },
