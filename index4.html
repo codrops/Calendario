@@ -159,31 +159,30 @@
                         'msTransition' : 'MSTransitionEnd',
                         'transition' : 'transitionend'
                     },
-                    transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+                    transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
                     $wrapper = $('#custom-inner'),
                     $calendar = $('#calendar'),
                     cal = $calendar.calendario({
-                        onDayClick : function( $el, content, dateProperties ) {
-
-                            if( content.length > 0 ) {
-                                if(dateProperties.startTime.length > 0) {
+                        onDayClick : function( $el, data, dateProperties ) {
+                            if( data.content.length > 0 ) {
+                                if(data.startTime.length > 0) {
                                     $('#view').trigger('calClick');
                                     reset();
-                                    for(var i = 0; i < dateProperties.startTime.length; i++) {
-                                        if(dateProperties.allDay[i]) allDay(content[i]);
-                                        else date(content[i], dateProperties.startTime[i], dateProperties.endTime[i]);
+                                    for(var i = 0; i < data.startTime.length; i++) {
+                                        if(data.allDay[i]) allDay(data.content[i]);
+                                        else date(data.content[i], data.startTime[i], data.endTime[i]);
                                     }
                                 }
                             }
 
                         },
-                        onDayCustom : function( $el, content, dateProperties ) {
-                            if( content.length > 0 ) {
-                                if(dateProperties.startTime.length > 0) {
+                        onDayCustom : function( $el, data, dateProperties ) {
+                            if( data.content.length > 0 ) {
+                                if(data.startTime.length > 0) {
                                     reset();
-                                    for(var i = 0; i < dateProperties.startTime.length; i++) {
-                                        if(dateProperties.allDay[i]) allDay(content[i]);
-                                        else date(content[i], dateProperties.startTime[i], dateProperties.endTime[i]);
+                                    for(var i = 0; i < data.startTime.length; i++) {
+                                        if(data.allDay[i]) allDay(data.content[i]);
+                                        else date(data.content[i], data.startTime[i], data.endTime[i]);
                                     }
                                 }
                             }
@@ -195,7 +194,7 @@
                     }),
                     $month = $( '#custom-month' ).html( cal.getMonthName() ),
                     $year = $( '#custom-year' ).html( cal.getYear() );
-
+                    
                     $( '#custom-next' ).on( 'click', function() {
                         cal.gotoNextMonth( updateMonthYear );
                     });

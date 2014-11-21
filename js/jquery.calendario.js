@@ -1,5 +1,5 @@
 /**
- * jquery.calendario.js v3.1.0
+ * jquery.calendario.js v3.2.0
  * http://www.codrops.com
  *
  * Licensed under the MIT license.
@@ -46,20 +46,20 @@
     events: 'click',
     fillEmpty: true,
     feedParser: './feed/',
-    zone: '00:00', // Ex: IST zone time is '+05:30'by default it is GMT
+    zone: '00:00', // Ex: IST zone time is '+05:30' by default it is GMT, Sign is important.
     checkUpdate: true //Check if any new version of Calendario is released (Details will be in the browser console)
   };
 
   $.Calendario.prototype = {
     _init : function(options){
       // options
-      this.VERSION = '3.1.0';
-      this.UNIQUE = '%{unique}%';
+      this.VERSION = '3.2.0';
+      this.UNIQUE = '%{unique}%'; //UNIQUE helps us differentiate your js from others and help us keep a track of run time.
       this.options = $.extend(true, {}, $.Calendario.defaults, options);
       this.today = new Date();
       this.month = (isNaN(this.options.month) || this.options.month === null) ? this.today.getMonth() : this.options.month - 1;
       this.year = (isNaN(this.options.year) || this.options.year === null) ? this.today.getFullYear() : this.options.year;
-      this.caldata = this.options.caldata || {};
+      this.caldata = this._processCaldata(this.options.caldata);
       // if hover is passed as an event then throw error if jQuery is 1.9 or above 1.9, because, hover psuedo name isn't supported
       if(parseFloat($().jquery) >= 1.9 && this.options.events.indexOf('hover') != -1) 
         this.logError('\'hover\' psuedo-name is not supported' + ' in jQuery 1.9+. Use \'mouseenter\' \'mouseleave\' events instead.');
@@ -68,41 +68,67 @@
       this.options.zone = this.options.zone.charAt(0) != '+' && this.options.zone.charAt(0) != '-' ? '+' + this.options.zone : this.options.zone;
       this._generateTemplate(true);
       this._initEvents();
-      //If check update set to true, then contact calendario's update servers for details
-      if(this.options.checkUpdate) this._checkUpdate();
     },
-        
-    _propDate: function($cell, event) {
+    
+    _processCaldataObj: function(val, key){
+      if(typeof val !== 'object') val = {content: val, startTime: '00:00', endTime: '23:59', allDay: true};
+      if(!val.content) this.logError('Content is missing in date ' + key);
+      if(val.startTime && !val.endTime) val.endTime = parseInt(val.startTime.split(':')[0]) + 1 + ':' + val.startTime.split(':')[1];
+      if(!val.startTime && !val.endTime) val = $.extend({}, val, {startTime: '00:00', endTime: '23:59', allDay: true});
+      if(val.startTime && val.endTime && val.allDay === undefined) val.allDay = false;
+      if(/^\d{2}-DD-\d{4}/.test(key) || /^\d{2}-DD-YYYY/.test(key)) {
+        var det = /^(\d{2})-DD-(\d{4})/.exec(key) || /^(\d{2})-DD-YYYY/.exec(key), chkDate;
+        if(det.length == 3) chkDate = new Date(det[2], det[1], 0);
+        else if(det.length == 2) chkDate = new Date(this.year, det[1], 0)
+        if(!val.startDate) val.startDate = 1;
+        if(!val.endDate && chkDate.getDate() != 1) val.endDate = chkDate.getDate();
+        if(!val.endDate && chkDate.getDate() == 1 && det.length == 3) val.endDate = chkDate.getDate();
+      }
+      return val;
+    },
+    
+    _processCaldata: function(caldata){
+      var self = this;
+      caldata = caldata || {};
+      $.each(caldata, function(key, val){
+        if(/^\d{2}-\d{2}-\d{4}/.test(key) || /^\d{2}-\d{2}-YYYY/.test(key) || /^\d{2}-DD-YYYY/.test(key) || /^MM-\d{2}-YYYY/.test(key) ||
+        /^\d{2}-DD-YYYY/.test(key) || /^MM-\d{2}-\d{4}/.test(key) || /^\d{2}-DD-\d{4}/.test(key) || key == 'TODAY') {} else
+          self.logError(key + ' is an Invalid Date. Date should not contain spaces, should be separated by \'-\' and should be in the ' + 
+          'format \'MM-DD-YYYY\'. That ain\'t that difficult!');
+        if(Array.isArray(val)) {
+          $.each(val, function(i, c){
+            val[i] = self._processCaldataObj(c, key);
+          });
+          caldata[key] = val;
+        } else {
+          caldata[key] = self._processCaldataObj(val, key);
+        }
+      });
+      return caldata;
+    },  
+     
+    _propDate: function($cell, event){
       var idx = $cell.index(),
-          content = [],
+          data = {allDay : [], content: [], endTime: [], startTime: []},
           dateProp = {
-            day : $cell.children( 'span.fc-date' ).text(),
+            day : $cell.children('span.fc-date').text(),
             month : this.month + 1,
-            monthname : this.options.displayMonthAbbr ? this.options.monthabbrs[ this.month ] : this.options.months[ this.month ],
+            monthname : this.options.displayMonthAbbr ? this.options.monthabbrs[this.month] : this.options.months[this.month],
             year : this.year,
             weekday : idx + this.options.startIn,
-            weekdayname : this.options.weeks[ (idx==6?0:idx + this.options.startIn) ]
-          },
-          startTime = [],
-          endTime = [],
-          allDay = [];
+            weekdayname : this.options.weeks[(idx==6?0:idx + this.options.startIn)]
+          };
           
       $cell.children( 'div.fc-calendar-events').children('div.fc-calendar-event').each(function(i, e){
-        if($(e).find('time').length > 0) {
-          startTime[i] = new Date($(e).find('time.fc-starttime').attr('datetime'));
-          endTime[i] = new Date($(e).find('time.fc-endtime').attr('datetime'));
-          allDay[i] = $(e).find('time.fc-allday').attr('datetime') === 'true' ? true : false;
-        }
-        var save = $(e).find('time').detach();
-        content[i] = $(e).html();
-        $(e).append(save);
+        var $html = $('<div>' + $(e).html() + '</div>');
+        data.startTime[i] = new Date($html.find('time.fc-starttime').attr('datetime'));
+        data.endTime[i] = new Date($html.find('time.fc-endtime').attr('datetime'));
+        data.allDay[i] = $html.find('time.fc-allday').attr('datetime') === 'true' ? true : false;
+        $html.find('time').remove();
+        data.content[i] = $html.html();
       });
-            
-      dateProp.startTime = startTime;
-      dateProp.endTime = endTime;
-      dateProp.allDay = allDay;
-          
-      if(dateProp.day) this.options[event]($cell, content, dateProp);
+      
+      if(dateProp.day) this.options[event]($cell, data, dateProp);
     },
         
     _initEvents : function() {
@@ -111,7 +137,7 @@
         event[i] = self.options.events[i].toLowerCase().trim();
         calendarioEventNameFormat[i] = 'onDay' + event[i].charAt(0).toUpperCase() + event[i].slice(1);
         
-		if(this.options[calendarioEventNameFormat[i]] === undefined)
+        if(this.options[calendarioEventNameFormat[i]] === undefined)
           this.options[calendarioEventNameFormat[i]] = function($el, $content, dateProperties) {return false;};
                 
         this.$el.on(event[i] + '.calendario', 'div.fc-row > div', function(e) {
@@ -119,21 +145,33 @@
           self._propDate($(this), calendarioEventNameFormat[$.inArray(e.type, event)]);
         });
       }
+      this.$el.on('shown.calendar.calendario', function(e, instance){
+        // If check update set to true, then contact calendario's update servers for details. We didn't want to slow down your code. So we
+        // check after the calendar is rendered.
+        if(instance && instance.options.checkUpdate) self._checkUpdate();
+      });
+      // newday trigger. This trigger is exactly triggered at 00:00 hours the next day with an uncertainty of 6ms.
+      this.$el.delay(new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1, 0, 0, 0) - new Date().getTime())
+      .queue(function(){
+        self.today = new Date();
+        if(self.today.getMonth() == self.month || self.today.getMonth() + 1 == self.month) self._generateTemplate(true);
+        self.$el.trigger($.Event('newday.calendar.calendario'));
+      });
     },
         
     _checkUpdate : function() {
       var self = this;
       $.getScript("https://raw.githubusercontent.com/codrops/Calendario/master/js/update.js")
-      .done(function( script, textStatus ) {
-        if(calendario.previous == self.version() || parseFloat(calendario.current) > parseFloat(self.version())) 
+      .done(function(script, textStatus){
+        if(calendario.current != self.version() && parseFloat(calendario.current) >= parseFloat(self.version())) 
           console.info(calendario.msg);
       })
-      .fail(function( jqxhr, settings, exception ) {
+      .fail(function(jqxhr, settings, exception){
         console.error(exception);
       });
     },
     
-	// Calendar logic based on http://jszen.blogspot.pt/2007/03/how-to-build-simple-calendar-with.html
+    // Calendar logic based on http://jszen.blogspot.pt/2007/03/how-to-build-simple-calendar-with.html
     _generateTemplate : function(firstRun, callback) {
       var head = this._getHead(),
           body = this._getBody(),
@@ -146,11 +184,11 @@
       }
     
       this.$cal = $('<div class="fc-calendar ' + rowClass + '">').append(head, body);
-      this.$el.find('div.fc-calendar').remove().end().append( this.$cal );
+      this.$el.find('div.fc-calendar').remove().end().append(this.$cal);
       this.$el.find('.fc-emptydate').parent().css({'background':'transparent', 'cursor':'default'});
-	  
+      
       if(!firstRun) this.$el.trigger($.Event('shown.calendario'));
-	  if(callback) callback.call();
+      if(callback) callback.call();
     },
         
     _getHead : function() {
@@ -158,31 +196,26 @@
       for(var i = 0; i <= 6; i++){
         var pos = i + this.options.startIn,
             j = pos > 6 ? pos - 6 - 1 : pos;
-            html += '<div>' + (this.options.displayWeekAbbr ? this.options.weekabbrs[ j ] : this.options.weeks[ j ]) + '</div>';
+            html += '<div>' + (this.options.displayWeekAbbr ? this.options.weekabbrs[j] : this.options.weeks[j]) + '</div>';
       }
       return html + '</div>';
     },
         
     _parseDataToDay : function (data, day, other) {
       var content = '';
-      if(!other) {
+      if(!other){
         if(Array.isArray(data)) content = this._convertDayArray(data, day);
         else content = this._wrapDay(data, day, true);
-      } else {
+      }else{
         if (!Array.isArray(data)) data = [data];
-          for(var i = 0; i < data.length; i++) {
-            if( data[i].startDate && data[i].endDate ) {
-              if((day >= data[i].startDate) && (day <= data[i].endDate)) content += this._wrapDay(data[i].content, day, true);
-            } else if(data[i].startDate > 1) {
-              if( day >= data[i].startDate ) content += this._wrapDay(data[i].content, day, true);
-            } else if( data[i].endDate > 0 ) {
-              if( day <= data[i].endDate ) content += this._wrapDay(data[i].content, day, true);
-            } else {
-              if( data[i].content ) content += this._wrapDay(data[i].content, day, true);
-              else content += this._wrapDay(data[i], day, true);
-            }
+        for(var i = 0; i < data.length; i++){
+          if(this.month != 1 && (day >= data[i].startDate) && (day <= data[i].endDate)) content += this._wrapDay(data[i], day, true);
+          else if(this.month == 1 && (day >= data[i].startDate)){
+            if(data[i].endDate && (day <= data[i].endDate)) content += this._wrapDay(data[i], day, true);
+            else if(!data[i].endDate) content += this._wrapDay(data[i], day, true);
           }
         }
+      }
       return content;
     },
         
@@ -202,17 +235,11 @@
     },
         
     _timeHtml : function(day, date){
-      var content = '';
-      if(typeof day !== 'object') day = {content: day, allDay: true};
-      if(day.content) content = day.content;
-      if(day.allDay){
-                day.startTime = '00:00';
-                day.endTime = '23:59';
-                content += '<time class="fc-allday" datetime=' + day.allDay + '></time>';
-       } else content += '<time class="fc-allday" datetime=' + day.allDay + '></time>';
-       if(day.startTime) content += '<time class="fc-starttime" datetime="' + this._toDateTime(day.startTime, date) + '">' + day.startTime + '</time>';
-       if(day.endTime) content += '<time class="fc-endtime" datetime="' + this._toDateTime(day.endTime, date, day.startTime) + '">' + day.endTime + '</time>';
-       return content;
+      var content = day.content;
+      content += '<time class="fc-allday" datetime="' + day.allDay + '"></time>';
+      content += '<time class="fc-starttime" datetime="' + this._toDateTime(day.startTime, date) + '">' + day.startTime + '</time>';
+      content += '<time class="fc-endtime" datetime="' + this._toDateTime(day.endTime, date, day.startTime) + '">' + day.endTime + '</time>';
+      return content;
     },
         
     _wrapDay: function (day, date, wrap) {
@@ -277,7 +304,7 @@
                 dayDataMonthlyYear = this.caldata[strdatemonthlyyear],
                 strdatemonthly = (this.month + 1 < 10 ? '0' + (this.month + 1) : this.month + 1) + '-DD-YYYY',
                 dayDataMonthly = this.caldata[strdatemonthly];
-	
+    
             if(today && this.caldata.TODAY) content += this._parseDataToDay(this.caldata.TODAY, day);
             if(dayData) content += this._parseDataToDay(dayData, day);
             if(dayDataMonth) content += this._parseDataToDay(dayDataMonth, day);
@@ -330,6 +357,10 @@
     /************************* 
     ***** PUBLIC METHODS *****
     **************************/
+    option : function(option, value) {
+      if(value) this.options[option] = value;
+      else return this.options[option];
+    },
     getYear : function(){
       return this.year;
     },
@@ -346,9 +377,10 @@
           pos = day + this.startingDay - this.options.startIn - (row * 7) - 1;
       return this.$cal.find('div.fc-body').children('div.fc-row').eq(row).children('div').eq(pos);
     },
-    setData : function(caldata) {
-      caldata = caldata || {};
-      $.extend(this.caldata, caldata);
+    setData : function(caldata, clear) {
+      caldata = this._processCaldata(caldata);
+      if(clear) this.caldata = caldata;
+      else $.extend(this.caldata, caldata);
       this._generateTemplate(false);
     },
     // goes to today's month/year
@@ -400,9 +432,8 @@
           logError("Cannot call methods on calendario prior to initialization; Attempted to call method '" + options + "'");
           return;
         }
-        if (!$.isFunction( instance[options] ) || options.charAt(0) === "_"){
+        if (!$.isFunction(instance[options]) || options.charAt(0) === "_"){
           logError("No such method '" + options + "' for calendario instance.");
-          return;
         }
         instance[options].apply(instance, args);
       });
@@ -412,7 +443,7 @@
         else instance = $.data(this, 'calendario', new $.Calendario(options, this));
       });
     }
-	instance.$el.trigger($.Event('shown.calendario'), [instance]);
+    instance.$el.trigger($.Event('shown.calendar.calendario'), [instance]);
     return instance;
   };
 })(jQuery, window);
