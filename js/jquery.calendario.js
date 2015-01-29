@@ -250,10 +250,11 @@
     },
         
     _convertDayArray: function (day, date) {
+      var wrap_days = []
       for(var i = 0; i < day.length; i++){
-        day[i] = this._wrapDay(day[i], date, false);
+        wrap_days[i] = this._wrapDay(day[i], date, false);
       }
-      return this._wrapDay(day.join('</div><div class="fc-calendar-event">'));
+      return this._wrapDay(wrap_days.join('</div><div class="fc-calendar-event">'));
     },
         
     _getBody : function() {
