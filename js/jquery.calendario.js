@@ -290,7 +290,7 @@
             inner += this.options.weekabbrs[j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn] + '</span>';
           }
           if (day <= monthLength && (i > 0 || j >= p)){
-            inner = '<span class="fc-date">' + day + '</span><span class="fc-weekday">' + this.options.weekabbrs[j + 
+            inner = '<span class="fc-date" data-fc-date=\"' + this._pad(this.year, 4) + this._pad(this.month, 2) + this._pad(day, 2) + '\">' + day + '</span><span class="fc-weekday">' + this.options.weekabbrs[j +
                     this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn ] + '</span>';
             
             var strdate = (this.month + 1 < 10 ? '0' + (this.month + 1) : this.month + 1) + '-' + (day < 10 ? '0' + day : day) + '-' + this.year, 
@@ -354,8 +354,18 @@
       }
       this._generateTemplate(false, callback);
     },
-        
-    /************************* 
+
+    /*
+     * Pad a number with 0's. Useful for date serials
+     * @param number The number to be padded with 0's
+     * @param size Required length for returned number
+     */
+    _pad : function (number, size) {
+        var s = "000000000" + number;
+        return s.substr(s.length-size);
+    },
+
+    /*************************
     ***** PUBLIC METHODS *****
     **************************/
     option : function(option, value) {
