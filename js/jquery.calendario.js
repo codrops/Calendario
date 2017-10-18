@@ -354,8 +354,18 @@
       }
       this._generateTemplate(false, callback);
     },
-        
-    /************************* 
+
+    /*
+     * Pad a number with 0's. Useful for date serials
+     * @param number The number to be padded with 0's
+     * @param size Required length for returned number
+     */
+    _pad : function (number, size) {
+        var s = "000000000" + number;
+        return s.substr(s.length-size);
+    },
+
+    /*************************
     ***** PUBLIC METHODS *****
     **************************/
     option : function(option, value) {
